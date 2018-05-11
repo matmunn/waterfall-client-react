@@ -1,0 +1,33 @@
+export const SET_TASKS = 'SET_TASKS'
+export const ADD_TASK = 'ADD_TASK'
+export const UPDATE_TASK = 'UPDATE_TASK'
+export const DELETE_TASK = 'DELETE_TASK'
+export const SET_TASK_COMPLETE_STATUS = 'SET_TASK_COMPLETE_STATUS'
+
+export const SET_CATEGORIES = 'SET_CATEGORIES'
+export const ADD_CATEGORY = 'ADD_CATEGORY'
+export const UPDATE_CATEGORY = 'UPDATE_CATEGORY'
+export const DELETE_CATEGORY = 'DELETE_CATEGORY'
+
+export const SET_USERS = 'SET_USERS'
+export const ADD_USER = 'ADD_USER'
+export const UPDATE_USER = 'UPDATE_USER'
+export const DELETE_USER = 'DELETE_USER'
+
+export const SET_CLIENTS = 'SET_CLIENTS'
+export const ADD_CLIENT = 'ADD_CLIENT'
+export const UPDATE_CLIENT = 'UPDATE_CLIENT'
+export const DELETE_CLIENT = 'DELETE_CLIENT'
+
+export const SET_NOTES = 'SET_NOTES'
+export const ADD_NOTE = 'ADD_NOTE'
+export const UPDATE_NOTE = 'UPDATE_NOTE'
+export const DELETE_NOTE = 'DELETE_NOTE'
+
+export const LOGIN = 'LOGIN'
+export const LOGOUT = 'LOGOUT'
+
+export const SET_NEXT_ROUTE = 'SET_NEXT_ROUTE'
+export const CLEAR_NEXT_ROUTE = 'CLEAR_NEXT_ROUTE'
+
+export const SET_NOTIFICATION_PERMISSION = 'SET_NOTIFICATION_PERMISSION'
