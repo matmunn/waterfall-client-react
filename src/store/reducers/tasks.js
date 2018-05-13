@@ -1,17 +1,18 @@
 import axios from 'axios'
+import moment from 'moment'
 
 import config from 'Config'
 
 import { SET_TASKS, ADD_TASK, UPDATE_TASK, DELETE_TASK,
          SET_TASK_COMPLETE_STATUS } from '../mutations'
 
-// import { baseApiUrl } from '../../config'
+// import { config.baseApiUrl } from '../../config'
 
 const mutations = {
   [SET_TASKS]: (state, tasks) => {
     return {
       ...state,
-      tasks: tasks,
+      tasks,
     }
   },
   [ADD_TASK]: (state, task) => {
@@ -41,7 +42,7 @@ const initialState = {
   tasks: []
 }
 
-const actions = { 
+const actions = {
   setTasks: tasks => ({
     type: SET_TASKS,
     payload: tasks
@@ -51,7 +52,7 @@ const actions = {
 const dispatchers = {
   dispatchGetAllTasks: dispatch => {
     return new Promise((resolve, reject) => {
-      axios.get(`${config.apiHost}/api/tasks`).then(response => {
+      axios.get(`${config.baseApiUrl}/tasks`).then(response => {
         if (response.status === 200) {
           dispatch(actions.setTasks(response.data))
           resolve(response.data.length)
@@ -61,36 +62,80 @@ const dispatchers = {
         reject(err)
       })
     })
+  },
+  dispatchGetTasksBetweenDates: (dispatch, dateRange = { start: moment().day(1).format('YYYY-MM-DD'), end: moment().day(5).format('YYYY-MM-DD') }) => {
+    return new Promise((resolve, reject) => {
+      axios.get(`${config.baseApiUrl}/tasks/${dateRange.start}/${dateRange.end}`).then(response => {
+        if (response.status === 200) {
+          dispatch(actions.setTasks(response.data))
+          resolve(response.data.length)
+        }
+        reject('There was an error')
+      }, () => {
+        reject('There was an error')
+      })
+    })
+  },
+  dispatchMarkTaskComplete: (dispatch, taskId) => {
+    return new Promise((resolve, reject) => {
+      axios.patch(`${config.baseApiUrl}/task/${taskId}/complete`).then(response => {
+        if (response.status === 200) {
+          resolve(true)
+        }
+        reject(response)
+      }, err => {
+        reject(err.response.data)
+      })
+    })
+  },
+  dispatchMarkTaskIncomplete: (dispatch, taskId) => {
+    return new Promise((resolve, reject) => {
+      axios.patch(`${config.baseApiUrl}/task/${taskId}/incomplete`).then(response => {
+        if (response.status === 200) {
+          resolve(true)
+        }
+        reject('There was an error')
+      }, () => {
+        reject('There was an error')
+      })
+    })
+  },
+  dispatchAddTask: (dispatch, taskData) => {
+    return new Promise((resolve, reject) => {
+      axios.post(`${config.baseApiUrl}/task`, taskData).then(response => {
+        if (response.status === 201) {
+          resolve(true)
+        }
+        reject(response)
+      }, err => {
+        reject(err)
+      })
+    })
+  },
+  dispatchEditTask: (dispatch, taskData) => {
+    return new Promise((resolve, reject) => {
+      axios.patch(`${config.baseApiUrl}/task/${taskData.id}`, taskData).then(response => {
+        if (response.status === 200) {
+          resolve(true)
+        }
+        reject(response)
+      }, err => {
+        reject(err.response.data)
+      })
+    })
+  },
+  dispatchDeleteTask: (dispatch, taskId) => {
+    return new Promise((resolve, reject) => {
+      axios.delete(`${config.baseApiUrl}/task/${taskId}`).then(response => {
+        if (response.status === 200) {
+          resolve(true)
+        }
+        reject('There was an error')
+      }, () => {
+        reject('There was an error')
+      })
+    })
   }
-  // dispatchSetCurrentCity: (dispatch, city) => {
-  //   dispatch(actions.setCurrentCity(city))
-  // },
-  // dispatchClearCitiesList: dispatch => {
-  //   dispatch(actions.setCitiesList([]))
-  // },
-  // dispatchGetCitiesList: (dispatch, query) => {
-  //   return axios.get(`${baseApiUrl}/cities/?search=${query}`)
-  //     .then(response => {
-  //       if (response.status === 200) {
-  //         dispatch(actions.setCitiesList(response.data))
-  //       }
-  //     }, err => {
-  //       console.log(err)
-  //       dispatch(actions.setCitiesList([]))
-  //     })
-  // },
-  // dispatchFetchCity: (dispatch, cityId) => {
-  //   return axios.get(`${baseApiUrl}/cities/${cityId}/`).then(response => {
-  //     if (response.status === 200) {
-  //       dispatch(actions.setFetchedCity(response.data))
-  //       return
-  //     }
-  //     console.log(response.data)
-  //   }, err => {
-  //     console.log(err)
-  //     dispatch(actions.setFetchedCity({}))
-  //   })
-  // }
 }
 
 const reducer = (state = initialState, action) => {

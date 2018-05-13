@@ -1,5 +1,5 @@
 export default {
-  apiHost: '//localhost:8181',
+  baseApiUrl: '//localhost:8181/api',
   pusherHost: 'localhost',
   pusherPort: 8484
 }

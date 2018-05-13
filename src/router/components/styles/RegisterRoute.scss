@@ -1,0 +1,52 @@
+@import "src/assets/styles/brand";
+
+.designBackground {
+  height: 23%;
+  background-color: $brand-color-primary;
+  // background-image: linear-gradient(75deg, rgba(121,164,252, 0.4) 0%, rgba(30,87,153, 0.4) 38%, rgba(30,87,153, 0.4) 68%, rgba(41,137,216, 0.4) 100%), url('/static/img/login-background.svg');
+}
+.greyBackground {
+  height: 77%;
+  background-color: $general-grey;
+}
+.flexCenter {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.loginComponent {
+  height: 100%;
+}
+.loginContainer {
+  margin: 0 auto;
+  width: 500px;
+  position: absolute;
+  top: 18%;
+  min-height: 400px;
+  left: calc(50% - 250px);
+  background-color: #FFFFFF;
+  padding: 40px;
+}
+.logo {
+  width: 450px;
+  margin: 0 auto 2em;
+  position: relative;
+  top: calc(50% - 57px);
+}
+
+@media (max-height: 700px) {
+  .designBackground {
+    height: 50%;
+  }
+  .greyBackground {
+    height: 50%;
+  }
+  .logo {
+    top: 30px;
+  }
+  .loginContainer {
+    top: 117px;
+    min-height: inherit;
+    height: 300px;
+  }
+}

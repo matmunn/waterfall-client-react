@@ -1,0 +1,7 @@
+@import "brand";
+@import "~bulma/sass/utilities/initial-variables";
+$primary: $brand-color-primary;
+$radius: 0;
+$family-sans-serif: 'Roboto',
+sans-serif;
+@import "~bulma/bulma";
