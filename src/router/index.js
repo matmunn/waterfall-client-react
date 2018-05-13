@@ -7,6 +7,7 @@ import HomeRoute from './components/HomeRoute'
 import LoginRoute from './components/LoginRoute'
 import LogoutRoute from './components/LogoutRoute'
 import RegisterRoute from './components/RegisterRoute'
+import WeeklyOverviewRoute from './components/WeeklyOverviewRoute'
 
 class Router extends Component {
   render () {
@@ -15,6 +16,7 @@ class Router extends Component {
         <Switch>
           <PrivateRoute exact path='/' component={HomeRoute} />
           <PrivateRoute path='/logout' component={LogoutRoute} />
+          <PrivateRoute path='/overview' component={WeeklyOverviewRoute} />
           <NonPrivateRoute path='/login' component={LoginRoute} />
           <NonPrivateRoute path='/register' component={RegisterRoute} />
         </Switch>

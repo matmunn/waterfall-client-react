@@ -96,7 +96,8 @@ module.exports = {
 
       '@': resolve('src'),
       'Auth': resolve('src/helpers/authentication'),
-      'Config': resolve('src/config')
+      'Config': resolve('src/config'),
+      'Helpers': resolve('src/helpers')
     },
     plugins: [
       // Prevents users from importing files from outside of src/ (or node_modules/).

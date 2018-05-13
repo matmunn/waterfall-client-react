@@ -48,7 +48,7 @@ class HomeRoute extends Component {
     this.setState({
       loading: true
     })
-    this.getTasksBetweenDates({ start: this.state.startDate.format('YYYY-MM-DD'), end: this.state.endDate.format('YYYY-MM-DD') }).then(tasks => {
+    this.props.getTasksBetweenDates({ start: this.state.startDate.format('YYYY-MM-DD'), end: this.state.endDate.format('YYYY-MM-DD') }).then(tasks => {
       this.setState({
         loading: false
       })

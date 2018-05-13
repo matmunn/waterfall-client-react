@@ -1,0 +1,50 @@
+.cliploader {
+  margin-top: 40px;
+}
+table {
+  font-size: 0.8vw;
+  margin-top: 2vh;
+  width: 100%;
+  overflow-x: scroll;
+}
+th {
+  text-align: center;
+  border-bottom-width: 2px;
+}
+.rotated-text {
+  th {
+    transform: rotate(-90deg);
+    height: 3vw;
+    font-weight: normal;
+    padding-top: 0.95vw;
+  }
+}
+tr:not(.rotated-text) th:first-of-type {
+  padding: 0 20px;
+}
+tr:not(.every-cell-br2px) th:nth-of-type(7n), .every-cell-br2px th {
+  border-right-width: 2px;
+}
+.no-tasks {
+  h3 {
+    text-align: center;
+  }
+}
+.job-title-cell {
+  vertical-align: middle;
+}
+
+@media (min-width: 1900px) {
+  table {
+    font-size: 17px;
+  }
+  .rotated-text th {
+    height: 70px;
+    padding-top: 23px;
+  }
+}
+tr:last-of-type {
+  td {
+    padding: 3px 10px;
+  }
+}
