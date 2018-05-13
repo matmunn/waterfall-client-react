@@ -5,8 +5,6 @@ import config from 'Config'
 
 import { LOGIN, LOGOUT } from '../mutations'
 
-// import { config.baseApiUrl } from '../../config'
-
 const mutations = {
   [LOGIN]: (state, user) => {
     return {

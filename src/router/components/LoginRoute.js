@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import classNames from 'classnames'
+import makeCancelable from 'makecancelable'
 
 import styles from './styles/LoginRoute.scss'
 import logo from '@/assets/static/logo.svg'
@@ -28,49 +29,51 @@ class LoginRoute extends Component {
       loading: true,
       errors: {}
     })
-    const authResponse = auth.attemptLogin(this.state.email, this.state.password)
-    authResponse.then(() => {
-      this.setState({
-        loading: false,
-        password: ''
-      })
-      if (auth.isLoggedIn()) {
-        // if (this.$store.getters.nextRoute !== null) {
-        //   const nextRoute = this.$store.getters.nextRoute
-        //   this.$store.commit(CLEAR_NEXT_ROUTE)
-        //   this.$router.push(nextRoute)
-        // } else {
-        //   this.$router.push('/')
-        // }
-      } else {
-        swal({
-          'title': 'Login Failed',
-          'text': 'Your login failed. Are you sure your email address and password are correct?',
-          'type': 'error'
-        })
-      }
-    }, err => {
-      this.setState({
-        loading: false,
-        password: ''
-      })
-
-      if (err.response.status === 422) {
-        let validationErrors = err.response.data
-        forEach(validationErrors, (value, key) => {
-          validationErrors[key] = value.join('<br />')
-        })
+    this.cancelLoginAttempt = makeCancelable(
+      auth.attemptLogin(this.state.email, this.state.password),
+      () => {
         this.setState({
-          errors: validationErrors
+          loading: false,
+          password: ''
         })
-      } else {
-        swal({
-          'title': 'Login Failed',
-          'text': 'An unkown error occurred while logging in. Please try again.',
-          'type': 'error'
+
+        if (!auth.isLoggedIn()) {
+          swal({
+            'title': 'Login Failed',
+            'text': 'Your login failed. Are you sure your email address and password are correct?',
+            'type': 'error'
+          })
+        }
+      },
+      err => {
+        this.setState({
+          loading: false,
+          password: ''
         })
+
+        if (err.response && err.response.status === 422) {
+          let validationErrors = err.response.data
+          forEach(validationErrors, (value, key) => {
+            validationErrors[key] = value.join('<br />')
+          })
+          this.setState({
+            errors: validationErrors
+          })
+        } else {
+          swal({
+            'title': 'Login Failed',
+            'text': 'An unkown error occurred while logging in. Please try again.',
+            'type': 'error'
+          })
+        }
       }
-    })
+    )
+  }
+
+  componentWillUnmount() {
+    if (this.cancelLoginAttempt) {
+      this.cancelLoginAttempt()
+    }
   }
 
   render() {

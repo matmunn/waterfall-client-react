@@ -64,7 +64,10 @@ class WeeklyOverviewRoute extends Component {
     })
   }
 
-  userTasks = userId => this.props.userTasks(userId, this.state.startDate.format('YYYY-MM-DD'), this.state.endDate.format('YYYY-MM-DD'))
+  userTasks = userId => {
+    console.log(userId)
+    return this.props.userTasks(userId, this.state.startDate.format('YYYY-MM-DD'), this.state.endDate.format('YYYY-MM-DD'))
+  }
 
   fetchTasksWithDates = () => {
     this.setState({

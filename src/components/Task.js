@@ -12,6 +12,8 @@ import { dispatchMarkTaskComplete, dispatchMarkTaskIncomplete } from '@/store/re
 
 import { TaskValidator } from '@/utils/validators'
 
+import styles from './styles/Task.scss'
+
 const mapStateToProps = state => ({
   client: clientId => clientSelector(clientId)(state),
   user: userId => userSelector(userId)(state)
@@ -49,9 +51,9 @@ class Task extends Component {
   }
 
   fillClasses = () => {
-    let classes = 'filler'
+    let classes = styles.filler
     if (this.props.task.task_added_during_week) {
-      classes += ' added_during_week'
+      classes += ` ${styles.addedDuringWeek}`
     }
     return classes
   }
@@ -61,7 +63,10 @@ class Task extends Component {
     if (this.props.task.is_absence) {
       color = 'f06767'
     }
-    return `background-color: #${color}; color: #${color}`
+    return {
+      backgroundColor: `#${color}`,
+      color: `#${color}`
+    }
   }
 
   markCompleted = () => {
@@ -84,7 +89,7 @@ class Task extends Component {
     let cells = []
     for (let i = 0; i < 35; i++) {
       cells.push((
-        <td>
+        <td key={i}>
           {
             this.shadeCell(i) ? (
               <div className={this.fillClasses()} style={this.backgroundColor()}>
@@ -107,7 +112,7 @@ class Task extends Component {
         <td>
           { this.props.task.blocks.length }h
         </td>
-        <td className="check-mark">
+        <td className={styles.checkMark}>
           {
             !this.props.task.completed ? (
               <i className="fa fa-check" onClick={() => this.markCompleted()}></i>
@@ -116,7 +121,7 @@ class Task extends Component {
             )
           }
           <i className="fa fa-comment-o" onClick={() => this.showModal()}></i>
-          ({ this.notes.length })
+          {/* ({ this.notes.length }) */}
         </td>
         {cells}
         {/* <NoteModal : notes='this.notes' : task='this.task' : modalVisible='modalVisible' @hideModal='hideModal' /> */}
