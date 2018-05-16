@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { ClipLoader } from 'react-spinners'
 import { reduce, map } from 'lodash'
 import PropTypes from 'prop-types'
+import moment from 'moment'
 
 import styles from './styles/UserTaskTable.scss'
 
@@ -23,14 +24,16 @@ class UserTaskTable extends Component {
     super(props)
 
     this.state = {
-      loading: false
+      loading: false,
+      startDate: moment().day(1),
+      endDate: moment().day(5),
     }
   }
 
   render() {
     if (!this.props.tasks.length) {
       return (
-        <div className='no-tasks'>
+        <div className={styles.noTasks}>
         {
           !this.state.loading ?
           (
@@ -41,7 +44,7 @@ class UserTaskTable extends Component {
             <ClipLoader color='#3097D1' size={30} className={styles.cliploader}></ClipLoader>
           )
         }
-        </div >
+        </div>
       )
     }
 
@@ -50,83 +53,87 @@ class UserTaskTable extends Component {
     const absenceHours = reduce(this.props.tasks, (accumulator, item) => accumulator + (item.is_absence ? item.blocks.length : 0), 0)
 
     return (
-      <table align='center'>
-        <tr className='every-cell-br2px'>
-          <th rowspan='2' colspan='4' className='job-title-cell'>
-            Job Title
-          </th>
-          <th colspan='7'>
-            Monday<br />
-            { this.state.startDate.format('DD/MM/YY') }
-          </th>
-          <th colspan='7'>
-            Tuesday<br />
-            { this.state.startDate.add(1, 'day').format('DD/MM/YY') }
-          </th>
-          <th colspan='7'>
-            Wednesday<br />
-            { this.state.startDate.add(2, 'days').format('DD/MM/YY') }
-          </th>
-          <th colspan='7'>
-            Thursday<br />
-            { this.state.startDate.add(3, 'days').format('DD/MM/YY') }
-          </th>
-          <th colspan='7'>
-            Friday<br />
-            { this.state.startDate.add(4, 'days').format('DD/MM/YY') }
-          </th>
-        </tr>
-        <tr className='rotated-text'>
-          {/* Monday */}
-          <th>0900</th>
-          <th>1000</th>
-          <th>1100</th>
-          <th>1200</th>
-          <th>1400</th>
-          <th>1500</th>
-          <th>1600</th>
-          {/* Tuesday */}
-          <th>0900</th>
-          <th>1000</th>
-          <th>1100</th>
-          <th>1200</th>
-          <th>1400</th>
-          <th>1500</th>
-          <th>1600</th>
-          {/* Wednesday */}
-          <th>0900</th>
-          <th>1000</th>
-          <th>1100</th>
-          <th>1200</th>
-          <th>1400</th>
-          <th>1500</th>
-          <th>1600</th>
-          {/* Thursday */}
-          <th>0900</th>
-          <th>1000</th>
-          <th>1100</th>
-          <th>1200</th>
-          <th>1400</th>
-          <th>1500</th>
-          <th>1600</th>
-          {/* Friday */}
-          <th>0900</th>
-          <th>1000</th>
-          <th>1100</th>
-          <th>1200</th>
-          <th>1400</th>
-          <th>1500</th>
-          <th>1600</th>
-        </tr>
-        {
-          map(this.props.tasks, task => <Task v-for='task in tasks' key={task.id} task={task} background={this.props.background} />)
-        }
-        <tr>
-          <td></td>
-          <td colspan='42'>
-            { totalWeeklyHours } scheduled hours for the week, { absenceHours } hours of absences. { completedHours } hours completed, { totalWeeklyHours - completedHours } remaining.
-          </td>
-        </tr>
+      <table align='center' className={styles.userTaskTable}>
+        <thead>
+          <tr className='every-cell-br2px'>
+            <th rowSpan='2' colSpan='4' className={styles.jobTitleCell}>
+              Job Title
+            </th>
+            <th colSpan='7'>
+              Monday<br />
+              { this.state.startDate.format('DD/MM/YY') }
+            </th>
+            <th colSpan='7'>
+              Tuesday<br />
+              { this.state.startDate.add(1, 'day').format('DD/MM/YY') }
+            </th>
+            <th colSpan='7'>
+              Wednesday<br />
+              { this.state.startDate.add(2, 'days').format('DD/MM/YY') }
+            </th>
+            <th colSpan='7'>
+              Thursday<br />
+              { this.state.startDate.add(3, 'days').format('DD/MM/YY') }
+            </th>
+            <th colSpan='7'>
+              Friday<br />
+              { this.state.startDate.add(4, 'days').format('DD/MM/YY') }
+            </th>
+          </tr>
+          <tr className={styles.rotatedText}>
+            {/* Monday */}
+            <th>0900</th>
+            <th>1000</th>
+            <th>1100</th>
+            <th>1200</th>
+            <th>1400</th>
+            <th>1500</th>
+            <th>1600</th>
+            {/* Tuesday */}
+            <th>0900</th>
+            <th>1000</th>
+            <th>1100</th>
+            <th>1200</th>
+            <th>1400</th>
+            <th>1500</th>
+            <th>1600</th>
+            {/* Wednesday */}
+            <th>0900</th>
+            <th>1000</th>
+            <th>1100</th>
+            <th>1200</th>
+            <th>1400</th>
+            <th>1500</th>
+            <th>1600</th>
+            {/* Thursday */}
+            <th>0900</th>
+            <th>1000</th>
+            <th>1100</th>
+            <th>1200</th>
+            <th>1400</th>
+            <th>1500</th>
+            <th>1600</th>
+            {/* Friday */}
+            <th>0900</th>
+            <th>1000</th>
+            <th>1100</th>
+            <th>1200</th>
+            <th>1400</th>
+            <th>1500</th>
+            <th>1600</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            map(this.props.tasks, task => <Task v-for='task in tasks' key={task.id} task={task} background={this.props.background} />)
+          }
+          <tr>
+            <td></td>
+            <td colSpan='42'>
+              { totalWeeklyHours } scheduled hours for the week, { absenceHours } hours of absences. { completedHours } hours completed, { totalWeeklyHours - completedHours } remaining.
+            </td>
+          </tr>
+        </tbody>
       </table>
     )
   }

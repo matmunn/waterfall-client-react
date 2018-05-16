@@ -4,6 +4,7 @@ import classNames from 'classnames'
 import { Link, withRouter } from 'react-router-dom'
 import swal from 'sweetalert2'
 import { forEach } from 'lodash'
+import makeCancelable from 'makecancelable'
 
 import styles from './styles/RegisterRoute.scss'
 import logo from '@/assets/static/logo.svg'
@@ -40,43 +41,51 @@ class RegisterRoute extends Component {
       email: this.state.email,
       password: this.state.password
     }
-    return this.props.attemptRegister(data).then(() => {
-      this.setState({
-        loading: false,
-        password: ''
-      })
-
-      if (auth.isLoggedIn()) {
-        this.props.history.replace('/')
-      } else {
-        swal({
-          'title': 'Registration Failed',
-          'text': 'Your registration failed. Are you sure your email address and password are correct?',
-          'type': 'error'
-        })
-      }
-    }, err => {
-      this.setState({
-        loading: false,
-        password: ''
-      })
-
-      if (err.response.status === 422) {
-        let validationErrors = err.response.data
-        forEach(validationErrors, (value, key) => {
-          validationErrors[key] = value.join('<br />')
-        })
+    this.cancelRegisterAttempt = makeCancelable(
+      this.props.attemptRegister(data),
+      () => {
         this.setState({
-          errors: validationErrors
+          loading: false,
+          password: ''
         })
-      } else {
-        swal({
-          'title': 'Registration Failed',
-          'text': 'An unkown error occurred while registering your account. Please try again.',
-          'type': 'error'
+
+        if (!auth.isLoggedIn()) {
+          swal({
+            'title': 'Registration Failed',
+            'text': 'Your registration failed. Are you sure your email address and password are correct?',
+            'type': 'error'
+          })
+        }
+      },
+      err => {
+        this.setState({
+          loading: false,
+          password: ''
         })
+
+        if (err.response.status === 422) {
+          let validationErrors = err.response.data
+          forEach(validationErrors, (value, key) => {
+            validationErrors[key] = value.join('<br />')
+          })
+          this.setState({
+            errors: validationErrors
+          })
+        } else {
+          swal({
+            'title': 'Registration Failed',
+            'text': 'An unkown error occurred while registering your account. Please try again.',
+            'type': 'error'
+          })
+        }
       }
-    })
+    )
+  }
+
+  componentWillUnmount() {
+    if (this.cancelRegisterAttempt) {
+      this.cancelRegisterAttempt()
+    }
   }
 
   render () {

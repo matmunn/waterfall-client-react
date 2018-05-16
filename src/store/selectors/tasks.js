@@ -15,7 +15,7 @@ export const sortedTasksSelector = state => sortBy(state.tasks.tasks, ['complete
 
 export const userTasksSelector = (userId, startDate, endDate) => {
   return createSelector(
-    sortedTasksWithDateSelector,
+    sortedTasksWithDateSelector(startDate, endDate),
     tasks => filter(tasks, task => task.user_id === userId)
   )
 }
