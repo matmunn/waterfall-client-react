@@ -26,7 +26,7 @@ class AdminTask extends Component {
       type: 'error',
       showCancelButton: true
     }).then(() => {
-      this.deleteTask(this.task.id)
+      this.props.deleteTask(this.task.id)
     }, swal.noop)
   }
 
@@ -58,7 +58,7 @@ class AdminTask extends Component {
           <router-link to='editLink'>
             <i className="fa fa-edit"></i>
           </router-link>
-          <a href="#" onClick={e => this.confirmDelete(e)} >
+          <a onClick={e => this.confirmDelete(e)} >
             <i className="fa fa-trash-o"></i>
           </a >
         </td>

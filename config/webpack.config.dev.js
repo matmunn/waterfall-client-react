@@ -163,7 +163,16 @@ module.exports = {
           },
           {
             test: /\.svg$/,
-            loader: 'svg-inline-loader'
+            oneOf: [
+              {
+                include: path.resolve(__dirname, '../src/assets/static/'),
+                use: 'svg-inline-loader'
+              },
+              {
+                exclude: path.resolve(__dirname, '../src/assets/static/'),
+                use: 'file-loader'
+              },
+            ],
           },
           // "postcss" loader applies autoprefixer to our CSS.
           // "css" loader resolves paths in CSS and adds assets as dependencies.

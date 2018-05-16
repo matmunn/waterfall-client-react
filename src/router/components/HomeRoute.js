@@ -5,6 +5,7 @@ import DatePicker from 'react-datepicker'
 import moment from 'moment'
 import toastr from 'toastr'
 import EventBus from 'eventing-bus'
+import { map } from 'lodash'
 
 import { displayCategoriesSelector } from '@/store/selectors/categories'
 import { dispatchGetAllCategories } from '@/store/reducers/categories'
@@ -108,7 +109,7 @@ class HomeRoute extends Component {
         </section>
         <Tabs>
           {
-            this.props.displayCategories.map(category => {
+            map(this.props.displayCategories, category => {
               return (
                 <div key={category.id}>
                   { category.description }

@@ -5,6 +5,7 @@ import moment from 'moment'
 import { connect } from 'react-redux'
 import EventBus from 'eventing-bus'
 import makeCancelable from 'makecancelable'
+import { map } from 'lodash'
 
 import { toastr } from 'Helpers'
 
@@ -65,7 +66,6 @@ class WeeklyOverviewRoute extends Component {
   }
 
   userTasks = userId => {
-    console.log(userId)
     return this.props.userTasks(userId, this.state.startDate.format('YYYY-MM-DD'), this.state.endDate.format('YYYY-MM-DD'))
   }
 
@@ -162,7 +162,7 @@ class WeeklyOverviewRoute extends Component {
           </div>
         </section>
         {
-          this.props.displayCategories.map(category => (
+          map(this.props.displayCategories, category => (
             <section className="section" key={category.id}>
               <div className={styles.categoryHeader}>
                 <h1 className="title">
@@ -170,7 +170,7 @@ class WeeklyOverviewRoute extends Component {
                 </h1>
               </div>
               {
-                this.props.categoryUsers(category.id).map(user => (
+                map(this.props.categoryUsers(category.id), user => (
                   <div className="user" key={user.id}>
                     <div className={styles.userHeader}>
                       <h2 className="subtitle is-4">
