@@ -7,12 +7,12 @@ import clients from './clients'
 import notes from './notes'
 
 const rootReducer = combineReducers({
-  tasks,
-  categories,
   auth,
-  users,
+  categories,
   clients,
   notes,
+  tasks,
+  users,
 })
 
 export default rootReducer

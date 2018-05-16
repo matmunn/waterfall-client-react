@@ -19,8 +19,8 @@ const _PrivateRoute = ({ component: Component, authenticated, ...rest }) => (
     authenticated ? (
       <Component {...props} />
     ) : (
-        <Redirect to='/login' />
-      )
+      <Redirect to='/login' />
+    )
   } />
 )
 
@@ -30,12 +30,10 @@ const _PrivateRoute = ({ component: Component, authenticated, ...rest }) => (
 const _NonPrivateRoute = ({ component: Component, authenticated, ...rest }) => (
   <Route {...rest} render={props =>
     authenticated ? (
-      <div>
-        <Redirect to='/' />
-      </div>
+      <Redirect to='/' />
     ) : (
-        <Component {...props} />
-      )
+      <Component {...props} />
+    )
   } />
 )
 
