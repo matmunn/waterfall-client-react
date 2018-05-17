@@ -96,7 +96,7 @@ class WeeklyOverviewRoute extends Component {
     )
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.getAllCategories()
     this.props.getAllUsers()
     this.props.getAllClients()

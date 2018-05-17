@@ -11,14 +11,10 @@ export const taskSelector = taskId => {
   )
 }
 
-export const sortedTasksSelector = state => sortBy(state.tasks.tasks, ['completed', 'start_date'])
-
-export const userTasksSelector = (userId, startDate, endDate) => {
-  return createSelector(
-    sortedTasksWithDateSelector(startDate, endDate),
-    tasks => filter(tasks, task => task.user_id === userId)
-  )
-}
+export const sortedTasksSelector = createSelector(
+  tasksSelector,
+  tasks => sortBy(tasks, ['completed', 'start_date'])
+)
 
 export const sortedTasksWithDateSelector = (startDate, endDate) => {
   return createSelector(
@@ -28,5 +24,12 @@ export const sortedTasksWithDateSelector = (startDate, endDate) => {
       const endTimeMatch = (moment(task.end_date) <= moment(endDate).hour(18).minute(0))
       return startTimeMatch && endTimeMatch
     })
+  )
+}
+
+export const userTasksSelector = (userId, startDate, endDate) => {
+  return createSelector(
+    sortedTasksWithDateSelector(startDate, endDate),
+    tasks => filter(tasks, task => task.user_id === userId)
   )
 }

@@ -4,19 +4,22 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 
 import helpers from 'Helpers'
+import { TaskValidator } from '@/utils/validators'
+
+import NoteModal from './NoteModal'
 
 import { clientSelector } from '@/store/selectors/clients'
 import { userSelector } from '@/store/selectors/users'
+import { taskNotesSelector } from '@/store/selectors/notes'
 
 import { dispatchMarkTaskComplete, dispatchMarkTaskIncomplete } from '@/store/reducers/tasks'
-
-import { TaskValidator } from '@/utils/validators'
 
 import styles from './styles/Task.scss'
 
 const mapStateToProps = state => ({
   client: clientId => clientSelector(clientId)(state),
-  user: userId => userSelector(userId)(state)
+  user: userId => userSelector(userId)(state),
+  notes: taskId => taskNotesSelector(taskId)(state),
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -85,6 +88,18 @@ class Task extends Component {
     return this.props.task.blocks.indexOf(cell) > -1
   }
 
+  showModal = () => {
+    this.setState({
+      modalVisible: true
+    })
+  }
+
+  hideModal = () => {
+    this.setState({
+      modalVisible: false
+    })
+  }
+
   render() {
     let cells = []
     for (let i = 0; i < 35; i++) {
@@ -101,8 +116,10 @@ class Task extends Component {
       ))
     }
 
+    const notes = this.props.notes(this.props.task.id)
+
     return (
-      <tr className={this.props.task.completed ? 'strikethrough' : ''}>
+      <tr className={this.props.task.completed ? styles.strikethrough : ''}>
         <td title={this.title()}>
           { this.props.client(this.props.task.client_id).name }
         </td>
@@ -121,10 +138,10 @@ class Task extends Component {
             )
           }
           <i className="fa fa-comment-o" onClick={() => this.showModal()}></i>
-          {/* ({ this.notes.length }) */}
+          ({ notes.length })
+          <NoteModal notes={notes} task={this.props.task} modalVisible={this.state.modalVisible} onHideModal={() => this.hideModal()} />
         </td>
         {cells}
-        {/* <NoteModal : notes='this.notes' : task='this.task' : modalVisible='modalVisible' @hideModal='hideModal' /> */}
       </tr>
     )
   }

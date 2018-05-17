@@ -43,10 +43,10 @@ class AdminTask extends Component {
           { this.props.task.description }
         </td>
         <td>
-          { this.formattedTime(this.task.start_date) }
+          { this.formattedTime(this.props.task.start_date) }
         </td>
         <td>
-          { this.formattedTime(this.task.end_date) }
+          { this.formattedTime(this.props.task.end_date) }
         </td>
         <td className="centered">
           { this.props.task.blocks.length }

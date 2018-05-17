@@ -1,5 +1,9 @@
 import React, { Component } from 'react'
 import { toastr } from 'Helpers'
+import classNames from 'classnames'
+import makeCancelable from 'makecancelable'
+import { withRouter } from 'react-router-dom'
+
 
 class CategoryForm extends Component {
   constructor(props) {
@@ -26,44 +30,54 @@ class CategoryForm extends Component {
       visible: this.state.visible
     }
 
-    let action = this.addCategory
-    if (this.editing) {
-      categoryData.id = this.category
-      action = this.editCategory
+    let action = this.props.addCategory
+    if (this.props.editing) {
+      categoryData.id = this.props.category
+      action = this.props.editCategory
     }
 
-    return action(categoryData).then(() => {
-      this.loading = false
+    this.cancelSaveCategory = makeCancelable(
+      action(categoryData),
+      () => {
+        this.setState({ loading: false })
 
-      this.$router.push('/admin/categories')
-    }, () => {
-      this.loading = false
+        this.props.history.push('/admin/categories')
+      },
+      () => {
+        this.setState({ loading: false })
 
-      helpers.toastr.error(`An error occurred while processing your request`, 'Error')
-    })
+        toastr.error(`An error occurred while processing your request`, 'Error')
+      }
+    )
+  }
+
+  componentWillUnmount() {
+    if (this.cancelSaveCategory) {
+      this.cancelSaveCategory()
+    }
   }
 
   render() {
     return (
       <form onSubmit={e => this.saveCategory(e)}>
-        <div class="field">
-          <label class="label" for="name">Category Name</label>
-          <input id="name" type="text" v-model="description" class="input" required>
+        <div className="field">
+          <label className="label" htmlFor="name">Category Name</label>
+          <input id="name" type="text" value={this.state.description} onChange={e => this.setState({ description: e.target.value })} className="input" required />
         </div>
-        <div class="field">
-          <label class="label" for="color">Hex Color</label>
-          <input id="color" type="text" v-model="color" class="input" required>
+        <div className="field">
+          <label className="label" htmlFor="color">Hex Color</label>
+          <input id="color" type="text" value={this.state.color} onChange={e => this.setState({ color: e.target.value })} className="input" required />
         </div>
-        <div class="field">
-          <p class="control">
-            <label class="checkbox">
-              <input type="checkbox" v-model='visible'>
+        <div className="field">
+          <p className="control">
+            <label className="checkbox">
+              <input type="checkbox" checked={this.state.visible} onChange={() => this.setState({ visible: !this.state.visible })} />
               &nbsp;Display in category list?
             </label>
           </p>
         </div>
-        <div class="field">
-          <button type="submit" class="button is-primary is-pulled-right" : class="{'is-loading': loading }">
+        <div className="field">
+          <button type="submit" className={classNames('button', 'is-primary', 'is-pulled-right', { 'is-loading': this.state.loading })}>
             Save Category
           </button>
         </div>
@@ -72,4 +86,4 @@ class CategoryForm extends Component {
   }
 }
 
-export default CategoryForm
+export default withRouter(CategoryForm)

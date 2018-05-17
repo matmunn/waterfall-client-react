@@ -26,15 +26,19 @@ const mapDispatchToProps = dispatch => ({
 })
 
 class TaskListRoute extends Component {
-  state = {
-    loading: false,
-    selectedUser: {},
-    dateFormat: 'YYYY-MM-DD',
-    startDate: moment().day(1),
-    endDate: moment().day(5),
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      loading: false,
+      selectedUser: {},
+      dateFormat: 'YYYY-MM-DD',
+      startDate: moment().day(1),
+      endDate: moment().day(5),
+    }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.setState({
       loading: true
     })
@@ -72,7 +76,7 @@ class TaskListRoute extends Component {
       )
     }
 
-    const taskList = sortBy(filter(this.props.sortedTasksWithDate(this.state.startDate, this.state.endDate), task => task.user_id === this.state.selectedUser), ['completed', 'user_id', 'start_time'])
+    const taskList = sortBy(filter(this.props.sortedTasksWithDate(this.state.startDate.format('YYYY-MM-DD'), this.state.endDate.format('YYYY-MM-DD')), task => task.user_id === this.state.selectedUser), ['completed', 'user_id', 'start_time'])
 
     return (
       <div>
@@ -94,51 +98,54 @@ class TaskListRoute extends Component {
               </div>
             </div>
             <div className="field has-addons has-addons-centered">
-              <p className="control">
+              <div className="control">
                 <DatePicker className='input' dateFormat={this.state.dateFormat} onChange={date => this.setDate(date)} selected={this.state.startDate} />
                 {/* <DatePicker : value='startDate' :input-className="datepickerInputClass" @selected='chooseDate2' :wrapper-className='datepickerWrapperClass'></DatePicker> */}
-              </p>
-              <p className="control">
+              </div>
+              <div className="control">
                 <span className="button is-static">
                   to
                 </span>
-              </p>
-              <p className="control">
+              </div>
+              <div className="control">
                 {/* <DatePicker : value='endDate' :input-className="datepickerInputClass" @selected='chooseDate2' :wrapper-className='datepickerWrapperClass'></DatePicker> */}
-              </p>
+              </div>
             </div>
           </div >
           <table>
-            <tr>
-              <th>
-                User
-              </th>
-              <th>
-                Client
-              </th>
-              <th>
-                Task Description
-              </th>
-              <th>
-                Start Time
-              </th>
-              <th>
-                End Time
-              </th>
-              <th>
-                Hours Allotted
-              </th>
-              <th>
-                Task Completed
-              </th>
-              <th></th>
-            </tr>
-            {/* <AdminTask v-for="task in taskList" : task="task" :key="task.id" /> */}
+            <thead>
+              <tr>
+                <th>
+                  User
+                </th>
+                <th>
+                  Client
+                </th>
+                <th>
+                  Task Description
+                </th>
+                <th>
+                  Start Time
+                </th>
+                <th>
+                  End Time
+                </th>
+                <th>
+                  Hours Allotted
+                </th>
+                <th>
+                  Task Completed
+                </th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
             {
               map(taskList, task => (
                 <AdminTask task={task} key={task.id} />
               ))
             }
+            </tbody>
           </table>
         </div>
       </div>

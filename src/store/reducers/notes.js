@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { filter } from 'lodash'
+import { filter, findIndex } from 'lodash'
 
 import config from 'Config'
 
@@ -22,7 +22,17 @@ const mutations = {
     }
   },
   [UPDATE_NOTE]: (state, note) => {
+    const elmIndex = findIndex(state.notes, x => x.id === note.id)
 
+    const notes = state.notes.splice(elmIndex, 1)
+
+    return {
+      ...state,
+      tasks: [
+        ...notes,
+        note
+      ]
+    }
   },
   [DELETE_NOTE]: (state, noteId) => {
     return {

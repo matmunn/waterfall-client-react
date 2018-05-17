@@ -6,14 +6,21 @@ import moment from 'moment'
 import toastr from 'toastr'
 import EventBus from 'eventing-bus'
 import { map } from 'lodash'
+import makeCancelable from 'makecancelable'
 
 import { displayCategoriesSelector } from '@/store/selectors/categories'
 import { dispatchGetAllCategories } from '@/store/reducers/categories'
+import { dispatchGetAllUsers } from '@/store/reducers/users'
+import { dispatchGetAllClients } from '@/store/reducers/clients'
+import { dispatchGetAllNotes } from '@/store/reducers/notes'
 
 import styles from './styles/HomeRoute.scss'
 import logo from '@/assets/static/logo.svg'
 
 import Tabs from '@/components/Tabs'
+import Tab from '@/components/Tab'
+import CategoryTabPanel from '@/components/CategoryTabPanel'
+import { dispatchGetTasksBetweenDates } from '../../store/reducers/tasks';
 
 const mapStateToProps = state => ({
   displayCategories: displayCategoriesSelector(state),
@@ -21,6 +28,10 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getAllCategories: () => dispatchGetAllCategories(dispatch),
+  getAllUsers: () => dispatchGetAllUsers(dispatch),
+  getAllClients: () => dispatchGetAllClients(dispatch),
+  getAllNotes: () => dispatchGetAllNotes(dispatch),
+  getTasksBetweenDates: dateRange => dispatchGetTasksBetweenDates(dispatch, dateRange),
 })
 
 class HomeRoute extends Component {
@@ -36,6 +47,10 @@ class HomeRoute extends Component {
 
   componentDidMount() {
     this.props.getAllCategories()
+    this.props.getAllUsers()
+    this.props.getAllClients()
+    this.props.getAllNotes()
+    this.fetchTasksWithDates()
   }
 
   setDate = date => {
@@ -49,15 +64,30 @@ class HomeRoute extends Component {
     this.setState({
       loading: true
     })
-    this.props.getTasksBetweenDates({ start: this.state.startDate.format('YYYY-MM-DD'), end: this.state.endDate.format('YYYY-MM-DD') }).then(tasks => {
-      this.setState({
-        loading: false
-      })
-      EventBus.publish('finished-loading-tasks')
-    }, () => {
-      toastr.error(`There was an error fetching tasks`, 'Error')
-    })
+    this.cancelFetchTasks = makeCancelable(
+      this.props.getTasksBetweenDates({
+        start: this.state.startDate.format('YYYY-MM-DD'),
+        end: this.state.endDate.format('YYYY-MM-DD')
+      }),
+      tasks => {
+        this.setState({
+          loading: false
+        })
+        EventBus.publish('finished-loading-tasks')
+      },
+      () => {
+        toastr.error(`There was an error fetching tasks`, 'Error')
+      }
+    )
   }
+
+  componentWillUnmount() {
+    if (this.cancelFetchTasks) {
+      this.cancelFetchTasks()
+    }
+  }
+
+  categorySafeName = catName => catName.toLowerCase().replace(' ', '_')
 
   render() {
     return (
@@ -111,15 +141,12 @@ class HomeRoute extends Component {
           {
             map(this.props.displayCategories, category => {
               return (
-                <div key={category.id}>
-                  { category.description }
-                </div>
+                <Tab key={category.id} name={category.description}>
+                  <CategoryTabPanel key={category.id} category={category} id={this.categorySafeName(category.description)} />
+                </Tab>
               )
             })
           }
-        {/*  <Tab v-for='category in displayCategories' :key='category.id' :name='category.description'>
-            <CategoryTabPanel :key='category.id' :category='category' :id='categorySafeName(category.description)'></CategoryTabPanel>
-                </Tab> */}
         </Tabs>
       </div>
     )

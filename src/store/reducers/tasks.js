@@ -1,5 +1,6 @@
 import axios from 'axios'
 import moment from 'moment'
+import { findIndex } from 'lodash'
 
 import config from 'Config'
 
@@ -24,8 +25,16 @@ const mutations = {
       ]
     }
   },
-  [UPDATE_TASK]: (state, action) => {
+  [UPDATE_TASK]: (state, task) => {
+    const elmIndex = findIndex(state.tasks, x => x.id === task.id)
 
+    let tasks = Array.from(state.tasks)
+    tasks.splice(elmIndex, 1, task)
+
+    return {
+      ...state,
+      tasks,
+    }
   },
   [DELETE_TASK]: (state, taskId) => {
     return {
@@ -42,11 +51,25 @@ const initialState = {
   tasks: []
 }
 
-const actions = {
-  setTasks: tasks => ({
-    type: SET_TASKS,
-    payload: tasks
-  }),
+export const actionSetTasks = tasks => ({
+  type: SET_TASKS,
+  payload: tasks
+})
+
+export const actionAddTask = task => ({
+  type: ADD_TASK,
+  payload: task
+})
+
+export const actionUpdateTask = task => ({
+  type: UPDATE_TASK,
+  payload: task
+})
+
+export const actions = {
+  setTasks: actionSetTasks,
+  addTask: actionAddTask,
+  updateTask: actionUpdateTask
 }
 
 export const dispatchGetAllTasks = dispatch => {
