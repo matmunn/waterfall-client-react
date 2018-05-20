@@ -162,7 +162,7 @@ class ModalNote extends Component {
                             <button className='button column is-12' onClick={() => this.cancelEdit()}>
                               Cancel
                             </button>
-                          ) : ''
+                          ) : null
                         }
                       </div>
                     </div>
@@ -192,7 +192,7 @@ class ModalNote extends Component {
                     </div>
                   </div>
                 </div>
-              ) : ''
+              ) : null
             }
           </div>
           <div className="clearfix"></div>

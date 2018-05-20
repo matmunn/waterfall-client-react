@@ -110,7 +110,7 @@ class Task extends Component {
               <div className={this.fillClasses()} style={this.backgroundColor()}>
                 <i className="fa fa-square fa-lg"></i>
               </div>
-            ) : ''
+            ) : null
           }
         </td>
       ))

@@ -109,7 +109,7 @@ class LoginRoute extends Component {
                   <p className="help is-danger">
                     { this.state.errors.email }
                   </p>
-                ) : ''
+                ) : null
               }
             </div>
             <div className="field">
@@ -125,7 +125,7 @@ class LoginRoute extends Component {
                   <p className="help is-danger">
                     {this.state.errors.password}
                   </p>
-                ) : ''
+                ) : null
               }
             </div>
             <button type="submit" className={classNames('button', 'is-primary', 'is-pulled-right', { 'is-loading': this.state.loading })}>
