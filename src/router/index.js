@@ -10,6 +10,8 @@ import LogoutRoute from './components/LogoutRoute'
 import RegisterRoute from './components/RegisterRoute'
 import WeeklyOverviewRoute from './components/WeeklyOverviewRoute'
 
+import AdminTaskAddRoute from './components/admin/TaskAddRoute'
+import AdminTaskEditRoute from './components/admin/TaskEditRoute'
 import AdminTaskListRoute from './components/admin/TaskListRoute'
 
 import AdminCategoryAddRoute from './components/admin/CategoryAddRoute'
@@ -46,6 +48,8 @@ class AdminRouter extends Component {
     return (
       <Switch>
         {/* <PrivateRoute path={`${this.props.match.path}/tasks/mine`} component={AdminTaskListMineRoute} /> */}
+        <PrivateRoute path={`${this.props.match.path}/tasks/:id/edit`} component={AdminTaskEditRoute} />
+        <PrivateRoute path={`${this.props.match.path}/tasks/add`} component={AdminTaskAddRoute} />
         <PrivateRoute path={`${this.props.match.path}/tasks`} component={AdminTaskListRoute} />
 
         <PrivateRoute path={`${this.props.match.path}/categories/:id/edit`} component={AdminCategoryEditRoute} />

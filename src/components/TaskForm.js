@@ -4,7 +4,8 @@ import { connect } from 'react-redux'
 import { map, forEach } from 'lodash'
 import makeCancelable from 'makecancelable'
 import { withRouter } from 'react-router-dom'
-import { Select } from 'react-select'
+import Select from 'react-select'
+import moment from 'moment'
 
 import { dispatchGetAllClients } from '@/store/modules/clients'
 import { dispatchGetAllUsers } from '@/store/modules/users'
@@ -15,6 +16,8 @@ import { clientsSelector } from '@/store/selectors/clients'
 
 import Auth from 'Auth'
 import { toastr } from 'Helpers'
+
+import DateRangePicker from '@/components/DateRangePicker'
 
 const mapDispatchToProps = dispatch => ({
   getAllClients: () => dispatchGetAllClients(dispatch),
@@ -37,7 +40,11 @@ class TaskForm extends Component {
     const { editing } = props
 
     const editingTask = editing ? props.getTask(props.task.id) : {}
-    // TODO: Handle all timings on TaskForm
+
+    const curTime = moment().minute(0)
+    const time0900 = moment().hour(9).minute(0)
+    const startTime = curTime < time0900 ? time0900 : curTime
+
     this.state = {
       editingTask,
       user: Auth.getUser().id,
@@ -49,7 +56,10 @@ class TaskForm extends Component {
       recurrenceType: editing ? editingTask.recurrence_period : 'Weeks',
       loading: false,
       absence: editing ? editingTask.is_absence : false,
-      timings: {},
+      timings: {
+        start: editing ? moment(editingTask.start_date).format('YYYY-MM-DD HH:mm') : startTime.format('YYYY-MM-DD HH:mm'),
+        end: editing ? moment(editingTask.end_date).format('YYYY-MM-DD HH:mm') : startTime.clone().add(2, 'hours').format('YYYY-MM-DD HH:mm'),
+      },
       errors: {}
     }
   }
@@ -69,7 +79,7 @@ class TaskForm extends Component {
 
     const taskData = {
       user: this.state.user,
-      client: this.state.client ? this.state.client.id : null,
+      client: this.state.client ? this.state.client : null,
       description: this.state.description,
       startTime: this.state.timings.start,
       endTime: this.state.timings.end,
@@ -127,7 +137,7 @@ class TaskForm extends Component {
     return (
       <form onSubmit={e => this.saveTask(e)} onKeyDown={e => { if (e.keyCode === 13) e.preventDefault() }}>
         <div className="field">
-          <label className="label" for="user">
+          <label className="label" htmlFor="user">
             Job is for
           </label>
           <div className="control">
@@ -136,7 +146,7 @@ class TaskForm extends Component {
                 <option disabled value="">Choose a user</option>
                 {
                   map(this.props.users, user => (
-                    <option value={user.id}>{ user.name }</option>
+                    <option value={user.id} key={user.id}>{ user.name }</option>
                   ))
                 }
               </select>
@@ -144,17 +154,18 @@ class TaskForm extends Component {
           </div>
         </div>
         <div className="field">
-          <label className="label" for="client">
+          <label className="label" htmlFor="client">
             Project
           </label>
           <div className="control">
             <div className="select">
-              {/* <v-select label='name' : value.sync='client' :className='{"is-danger": this.errors.client }' :options='clients' :on-change='changeVal'></v-select> */}
               <Select
                 options={this.props.clients}
                 value={this.state.client}
                 onChange={value => this.setState({ client: value })}
                 searchable={true}
+                labelKey='name'
+                valueKey='id'
               />
             </div>
           </div>
@@ -167,7 +178,7 @@ class TaskForm extends Component {
           }
         </div>
         <div className="field">
-          <label className="label" for="description">
+          <label className="label" htmlFor="description">
             Task Description
           </label>
           <div className="control">
@@ -183,10 +194,10 @@ class TaskForm extends Component {
         </div>
         <div className="field">
           <div className="field col-md-6">
-            <label className="label" for="dateRange">
+            <label className="label" htmlFor="dateRange">
               Task Timings
             </label>
-              {/* <DateRangePicker : id='`dateRange`' v-model='timings' :startTime='this.timings.start' :endTime='this.timings.end'></DateRangePicker> */}
+            <DateRangePicker id='dateRange' onChange={val => this.setState({ timings: val })} startTime={this.state.timings.start} endTime={this.state.timings.end} />{/*:*/}
           </div>
         </div>
         <div className="field">
