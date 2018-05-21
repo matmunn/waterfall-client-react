@@ -12,7 +12,7 @@ import { clientSelector } from '@/store/selectors/clients'
 import { userSelector } from '@/store/selectors/users'
 import { taskNotesSelector } from '@/store/selectors/notes'
 
-import { dispatchMarkTaskComplete, dispatchMarkTaskIncomplete } from '@/store/reducers/tasks'
+import { dispatchMarkTaskComplete, dispatchMarkTaskIncomplete } from '@/store/modules/tasks'
 
 import styles from './styles/Task.scss'
 

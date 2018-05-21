@@ -8,9 +8,9 @@ import DatePicker from 'react-datepicker'
 import Auth from 'Auth'
 import AdminTask from './AdminTask'
 
-import { dispatchGetAllUsers } from '@/store/reducers/users'
-import { dispatchGetAllTasks } from '@/store/reducers/tasks'
-import { dispatchGetAllClients } from '@/store/reducers/clients'
+import { dispatchGetAllUsers } from '@/store/modules/users'
+import { dispatchGetAllTasks } from '@/store/modules/tasks'
+import { dispatchGetAllClients } from '@/store/modules/clients'
 
 import { sortedTasksWithDateSelector } from '@/store/selectors/tasks'
 

@@ -9,10 +9,10 @@ import { map } from 'lodash'
 import makeCancelable from 'makecancelable'
 
 import { displayCategoriesSelector } from '@/store/selectors/categories'
-import { dispatchGetAllCategories } from '@/store/reducers/categories'
-import { dispatchGetAllUsers } from '@/store/reducers/users'
-import { dispatchGetAllClients } from '@/store/reducers/clients'
-import { dispatchGetAllNotes } from '@/store/reducers/notes'
+import { dispatchGetAllCategories } from '@/store/modules/categories'
+import { dispatchGetAllUsers } from '@/store/modules/users'
+import { dispatchGetAllClients } from '@/store/modules/clients'
+import { dispatchGetAllNotes } from '@/store/modules/notes'
 
 import styles from './styles/HomeRoute.scss'
 import logo from '@/assets/static/logo.svg'
@@ -20,7 +20,7 @@ import logo from '@/assets/static/logo.svg'
 import Tabs from '@/components/Tabs'
 import Tab from '@/components/Tab'
 import CategoryTabPanel from '@/components/CategoryTabPanel'
-import { dispatchGetTasksBetweenDates } from '../../store/reducers/tasks';
+import { dispatchGetTasksBetweenDates } from '../../store/modules/tasks';
 
 const mapStateToProps = state => ({
   displayCategories: displayCategoriesSelector(state),

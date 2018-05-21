@@ -1,13 +1,10 @@
 import axios from 'axios'
 import moment from 'moment'
-import { findIndex } from 'lodash'
+import { filter, findIndex } from 'lodash'
 
 import config from 'Config'
 
-import { SET_TASKS, ADD_TASK, UPDATE_TASK, DELETE_TASK,
-         SET_TASK_COMPLETE_STATUS } from '../mutations'
-
-// import { config.baseApiUrl } from '../../config'
+import { SET_TASKS, ADD_TASK, UPDATE_TASK, DELETE_TASK } from '../mutations'
 
 const mutations = {
   [SET_TASKS]: (state, tasks) => {
@@ -39,12 +36,9 @@ const mutations = {
   [DELETE_TASK]: (state, taskId) => {
     return {
       ...state,
-      tasks: state.tasks.filter(x => x.id !== taskId)
+      tasks: filter(state.tasks, x => x.id !== taskId)
     }
   },
-  [SET_TASK_COMPLETE_STATUS]: (state, { taskId, status }) => {
-
-  }
 }
 
 const initialState = {
@@ -66,10 +60,16 @@ export const actionUpdateTask = task => ({
   payload: task
 })
 
+export const actionDeleteTask = taskId => ({
+  type: DELETE_TASK,
+  payload: taskId
+})
+
 export const actions = {
   setTasks: actionSetTasks,
   addTask: actionAddTask,
-  updateTask: actionUpdateTask
+  updateTask: actionUpdateTask,
+  deleteTask: actionDeleteTask
 }
 
 export const dispatchGetAllTasks = dispatch => {

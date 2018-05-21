@@ -10,7 +10,7 @@ import styles from './styles/RegisterRoute.scss'
 import logo from '@/assets/static/logo.svg'
 
 import auth from 'Auth'
-import { dispatchers } from '@/store/reducers/auth'
+import { dispatchers } from '@/store/modules/auth'
 
 const mapDispatchToProps = dispatch => ({
   attemptRegister: userData => dispatchers.dispatchAttemptRegister(dispatch, userData),

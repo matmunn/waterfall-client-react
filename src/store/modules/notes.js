@@ -24,14 +24,12 @@ const mutations = {
   [UPDATE_NOTE]: (state, note) => {
     const elmIndex = findIndex(state.notes, x => x.id === note.id)
 
-    const notes = state.notes.splice(elmIndex, 1)
+    let data = Array.from(state.notes)
+    data.splice(elmIndex, 1, note)
 
     return {
       ...state,
-      tasks: [
-        ...notes,
-        note
-      ]
+      notes: data,
     }
   },
   [DELETE_NOTE]: (state, noteId) => {
@@ -46,11 +44,31 @@ const initialState = {
   notes: []
 }
 
+export const actionSetNotes = notes => ({
+  type: SET_NOTES,
+  payload: notes
+})
+
+export const actionAddNote = note => ({
+  type: ADD_NOTE,
+  payload: note
+})
+
+export const actionUpdateNote = note => ({
+  type: UPDATE_NOTE,
+  payload: note
+})
+
+export const actionDeleteNote = noteId => ({
+  type: DELETE_NOTE,
+  payload: noteId
+})
+
 const actions = {
-  setNotes: notes => ({
-    type: SET_NOTES,
-    payload: notes
-  }),
+  setNotes: actionSetNotes,
+  addNote: actionAddNote,
+  updateNote: actionUpdateNote,
+  deleteNote: actionDeleteNote,
 }
 
 export const dispatchGetAllNotes = dispatch => {

@@ -7,7 +7,7 @@ import makeCancelable from 'makecancelable'
 import { toastr } from 'Helpers'
 
 import { userSelector } from '@/store/selectors/users'
-import { dispatchDeleteNote, dispatchEditNote } from '@/store/reducers/notes'
+import { dispatchDeleteNote, dispatchEditNote } from '@/store/modules/notes'
 
 import styles from './styles/ModalNote.scss'
 

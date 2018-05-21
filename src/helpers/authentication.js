@@ -1,7 +1,7 @@
 import moment from 'moment'
 import store from '@/store'
 
-import { dispatchers } from '@/store/reducers/auth'
+import { dispatchers } from '@/store/modules/auth'
 
 export const isLoggedIn = () => {
   return store.getState().auth.loginStatus

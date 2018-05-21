@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { filter, findIndex } from 'lodash'
 
 import config from 'Config'
 
@@ -21,12 +22,20 @@ const mutations = {
     }
   },
   [UPDATE_USER]: (state, user) => {
+    const elmIndex = findIndex(state.users, x => x.id === user.id)
 
+    let data = Array.from(state.users)
+    data.splice(elmIndex, 1, user)
+
+    return {
+      ...state,
+      users: data,
+    }
   },
   [DELETE_USER]: (state, userId) => {
     return {
       ...state,
-      users: state.users.filter(x => x.id !== userId)
+      users: filter(state.users, x => x.id !== userId)
     }
   },
 }
@@ -35,11 +44,31 @@ const initialState = {
   users: []
 }
 
+export const actionSetUsers = users => ({
+  type: SET_USERS,
+  payload: users
+})
+
+export const actionAddUser = user => ({
+  type: ADD_USER,
+  payload: user
+})
+
+export const actionUpdateUser = user => ({
+  type: UPDATE_USER,
+  payload: user
+})
+
+export const actionDeleteUser = userId => ({
+  type: DELETE_USER,
+  payload: userId
+})
+
 const actions = {
-  setUsers: users => ({
-    type: SET_USERS,
-    payload: users
-  }),
+  setUsers: actionSetUsers,
+  addUser: actionAddUser,
+  updateUser: actionUpdateUser,
+  deleteUser: actionDeleteUser
 }
 
 export const dispatchGetAllUsers = dispatch => {

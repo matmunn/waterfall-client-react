@@ -12,6 +12,18 @@ import WeeklyOverviewRoute from './components/WeeklyOverviewRoute'
 
 import AdminTaskListRoute from './components/admin/TaskListRoute'
 
+import AdminCategoryAddRoute from './components/admin/CategoryAddRoute'
+import AdminCategoryEditRoute from './components/admin/CategoryEditRoute'
+import AdminCategoryListRoute from './components/admin/CategoryListRoute'
+
+import AdminClientAddRoute from './components/admin/ClientAddRoute'
+import AdminClientEditRoute from './components/admin/ClientEditRoute'
+import AdminClientListRoute from './components/admin/ClientListRoute'
+
+import AdminUserAddRoute from './components/admin/UserAddRoute'
+import AdminUserEditRoute from './components/admin/UserEditRoute'
+import AdminUserListRoute from './components/admin/UserListRoute'
+
 class Router extends Component {
   render () {
     return (
@@ -33,7 +45,20 @@ class AdminRouter extends Component {
   render () {
     return (
       <Switch>
+        {/* <PrivateRoute path={`${this.props.match.path}/tasks/mine`} component={AdminTaskListMineRoute} /> */}
         <PrivateRoute path={`${this.props.match.path}/tasks`} component={AdminTaskListRoute} />
+
+        <PrivateRoute path={`${this.props.match.path}/categories/:id/edit`} component={AdminCategoryEditRoute} />
+        <PrivateRoute path={`${this.props.match.path}/categories/add`} component={AdminCategoryAddRoute} />
+        <PrivateRoute path={`${this.props.match.path}/categories`} component={AdminCategoryListRoute} />
+
+        <PrivateRoute path={`${this.props.match.path}/clients/:id/edit`} component={AdminClientEditRoute} />
+        <PrivateRoute path={`${this.props.match.path}/clients/add`} component={AdminClientAddRoute} />
+        <PrivateRoute path={`${this.props.match.path}/clients`} component={AdminClientListRoute} />
+
+        <PrivateRoute path={`${this.props.match.path}/users/:id/edit`} component={AdminUserEditRoute} />
+        <PrivateRoute path={`${this.props.match.path}/users/add`} component={AdminUserAddRoute} />
+        <PrivateRoute path={`${this.props.match.path}/users`} component={AdminUserListRoute} />
       </Switch>
     )
   }

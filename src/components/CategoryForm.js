@@ -1,18 +1,35 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { toastr } from 'Helpers'
 import classNames from 'classnames'
 import makeCancelable from 'makecancelable'
 import { withRouter } from 'react-router-dom'
 
+import { dispatchAddCategory, dispatchEditCategory } from '@/store/modules/categories'
+import { categorySelector } from '@/store/selectors/categories'
+
+const mapStateToProps = state => ({
+  getCategory: categoryId => categorySelector(categoryId)(state)
+})
+
+const mapDispatchToProps = dispatch => ({
+  addCategory: data => dispatchAddCategory(dispatch, data),
+  editCategory: data => dispatchEditCategory(dispatch, data),
+})
 
 class CategoryForm extends Component {
   constructor(props) {
     super(props)
 
+    const { editing } = this.props
+
+    const editingCategory = editing ? props.getCategory(props.category) : {}
+
     this.state = {
-      description: '',
-      color: 'FF0000',
-      visible: true,
+      editingCategory,
+      description: editing ? editingCategory.description : '',
+      color: editing ? editingCategory.hex_color: 'FF0000',
+      visible: editing ? editingCategory.display_in_list : true,
       loading: false
     }
   }
@@ -86,4 +103,4 @@ class CategoryForm extends Component {
   }
 }
 
-export default withRouter(CategoryForm)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CategoryForm))

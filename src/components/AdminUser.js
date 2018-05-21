@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import swal from 'sweetalert2'
 
 import { categorySelector } from '@/store/selectors/categories'
-import { dispatchDeleteUser } from '@/store/reducers/users'
+import { dispatchDeleteUser } from '@/store/modules/users'
 
 import styles from './styles/AdminUser.scss'
 
@@ -36,10 +36,10 @@ class AdminUser extends Component {
     return (
       <tr className={styles.AdminUser}>
         <td>
-          { this.user.name }
+          { this.props.user.name }
         </td>
         <td>
-          { this.user.email }
+          { this.props.user.email }
         </td>
         <td>
           { this.props.getCategory(this.props.user.category_id).description }

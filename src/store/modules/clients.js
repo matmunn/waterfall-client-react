@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { filter } from 'lodash'
+import { filter, findIndex } from 'lodash'
 
 import config from 'Config'
 
@@ -22,7 +22,15 @@ const mutations = {
     }
   },
   [UPDATE_CLIENT]: (state, client) => {
+    const elmIndex = findIndex(state.clients, x => x.id === client.id)
 
+    let data = Array.from(state.clients)
+    data.splice(elmIndex, 1, client)
+
+    return {
+      ...state,
+      clients: data,
+    }
   },
   [DELETE_CLIENT]: (state, clientId) => {
     return {
@@ -36,11 +44,31 @@ const initialState = {
   clients: []
 }
 
+export const actionSetClients = clients => ({
+  type: SET_CLIENTS,
+  payload: clients
+})
+
+export const actionAddClient = client => ({
+  type: ADD_CLIENT,
+  payload: client
+})
+
+export const actionUpdateClient = client => ({
+  type: UPDATE_CLIENT,
+  payload: client
+})
+
+export const actionDeleteClient = clientId => ({
+  type: DELETE_CLIENT,
+  payload: clientId
+})
+
 const actions = {
-  setClients: clients => ({
-    type: SET_CLIENTS,
-    payload: clients
-  }),
+  setClients: actionSetClients,
+  addClient: actionAddClient,
+  updateClient: actionUpdateClient,
+  deleteClient: actionDeleteClient
 }
 
 export const dispatchGetAllClients = dispatch => {

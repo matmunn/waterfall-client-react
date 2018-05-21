@@ -9,8 +9,8 @@ import { toastr } from 'Helpers'
 
 import { categoriesSelector } from '@/store/selectors/categories'
 import { userSelector } from '@/store/selectors/users'
-import { dispatchGetAllCategories } from '@/store/reducers/categories'
-import { dispatchEditUser, dispatchAddUser } from '@/store/reducers/users'
+import { dispatchGetAllCategories } from '@/store/modules/categories'
+import { dispatchEditUser, dispatchAddUser } from '@/store/modules/users'
 
 const mapStateToProps = state => ({
   categories: categoriesSelector(state),

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import swal from 'sweetalert2'
 
-import { dispatchDeleteCategory } from '@/store/reducers/categories'
+import { dispatchDeleteCategory } from '@/store/modules/categories'
 
 import styles from './styles/AdminCategory.scss'
 
@@ -27,7 +27,7 @@ class AdminCategory extends Component {
 
   render() {
     const editLink = `/admin/categories/${this.props.category.id}/edit`
-    const fillSample = `background-color: #${this.props.category.hex_color}`
+    const fillSample = { backgroundColor: `#${this.props.category.hex_color}` }
 
     return (
       <tr className={styles.AdminCategory}>

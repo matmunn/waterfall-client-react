@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import swal from 'sweetalert2'
 
 import { userSelector } from '@/store/selectors/users'
-import { dispatchDeleteClient } from '@/store/reducers/clients'
+import { dispatchDeleteClient } from '@/store/modules/clients'
 
 import styles from './styles/AdminClient.scss'
 

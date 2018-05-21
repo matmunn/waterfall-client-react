@@ -7,7 +7,7 @@ import swal from 'sweetalert2'
 
 import { userSelector } from '@/store/selectors/users'
 import { clientSelector } from '@/store/selectors/clients'
-import { dispatchDeleteTask } from '@/store/reducers/tasks'
+import { dispatchDeleteTask } from '@/store/modules/tasks'
 
 import styles from './styles/AdminTask.scss'
 

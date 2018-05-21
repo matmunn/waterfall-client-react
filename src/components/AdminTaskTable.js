@@ -9,9 +9,9 @@ import Auth from 'Auth'
 import AdminTask from './AdminTask'
 
 import { sortedTasksWithDateSelector } from '@/store/selectors/tasks'
-import { dispatchGetAllTasks } from '@/store/reducers/tasks'
-import { dispatchGetAllUsers } from '@/store/reducers/users'
-import { dispatchGetAllClients } from '@/store/reducers/clients'
+import { dispatchGetAllTasks } from '@/store/modules/tasks'
+import { dispatchGetAllUsers } from '@/store/modules/users'
+import { dispatchGetAllClients } from '@/store/modules/clients'
 
 const mapStateToProps = state => ({
   sortedTasksWithDate: (startDate, endDate) => sortedTasksWithDateSelector(startDate, endDate)(state),

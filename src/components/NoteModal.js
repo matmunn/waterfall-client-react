@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import { toastr } from 'Helpers'
 
 import ModalNote from './ModalNote'
-import { dispatchAddNote } from '@/store/reducers/notes'
+import { dispatchAddNote } from '@/store/modules/notes'
 
 import styles from './styles/NoteModal.scss'
 

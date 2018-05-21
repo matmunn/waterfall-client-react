@@ -9,7 +9,11 @@ import config from 'Config'
 
 import Router from './router'
 
-import { actionAddTask, actionUpdateTask } from '@/store/reducers/tasks'
+import { actionAddTask, actionUpdateTask, actionDeleteTask } from '@/store/modules/tasks'
+import { actionAddNote, actionUpdateNote, actionDeleteNote } from '@/store/modules/notes'
+import { actionAddUser, actionUpdateUser, actionDeleteUser } from '@/store/modules/users'
+import { actionAddCategory, actionUpdateCategory, actionDeleteCategory } from '@/store/modules/categories'
+import { actionAddClient, actionUpdateClient, actionDeleteClient } from '@/store/modules/clients'
 
 window.Pusher = Pusher
 
@@ -46,48 +50,48 @@ class App extends Component {
       .listen('.TaskAdded', data => {
         store.dispatch(actionAddTask(data.task))
       })
-      // .listen('.TaskDeleted', data => {
-      //   this.$store.commit(DELETE_TASK, data.taskId)
-      // })
+      .listen('.TaskDeleted', data => {
+        store.dispatch(actionDeleteTask(data.taskId))
+      })
       .listen('.TaskEdited', data => {
         store.dispatch(actionUpdateTask(data.task))
       })
-      // .listen('.NoteAdded', data => {
-      //   this.$store.commit(ADD_NOTE, data.note)
-      // })
-      // .listen('.NoteEdited', data => {
-      //   this.$store.commit(UPDATE_NOTE, data.note)
-      // })
-      // .listen('.NoteDeleted', data => {
-      //   this.$store.commit(DELETE_NOTE, data.noteId)
-      // })
-      // .listen('.UserAdded', data => {
-      //   this.$store.commit(ADD_USER, data.user)
-      // })
-      // .listen('.UserEdited', data => {
-      //   this.$store.commit(UPDATE_USER, data.user)
-      // })
-      // .listen('.UserDeleted', data => {
-      //   this.$store.commit(DELETE_USER, data.userId)
-      // })
-      // .listen('.CategoryAdded', data => {
-      //   this.$store.commit(ADD_CATEGORY, data.category)
-      // })
-      // .listen('.CategoryEdited', data => {
-      //   this.$store.commit(UPDATE_CATEGORY, data.category)
-      // })
-      // .listen('.CategoryDeleted', data => {
-      //   this.$store.commit(DELETE_CATEGORY, data.categoryId)
-      // })
-      // .listen('.ClientAdded', data => {
-      //   this.$store.commit(ADD_CLIENT, data.client)
-      // })
-      // .listen('.ClientEdited', data => {
-      //   this.$store.commit(UPDATE_CLIENT, data.client)
-      // })
-      // .listen('.ClientDeleted', data => {
-      //   this.$store.commit(DELETE_CLIENT, data.clientId)
-      // })
+      .listen('.NoteAdded', data => {
+        store.dispatch(actionAddNote(data.note))
+      })
+      .listen('.NoteEdited', data => {
+        store.dispatch(actionUpdateNote(data.note))
+      })
+      .listen('.NoteDeleted', data => {
+        store.dispatch(actionDeleteNote(data.noteId))
+      })
+      .listen('.UserAdded', data => {
+        store.dispatch(actionAddUser(data.user))
+      })
+      .listen('.UserEdited', data => {
+        store.dispatch(actionUpdateUser(data.user))
+      })
+      .listen('.UserDeleted', data => {
+        store.dispatch(actionDeleteUser(data.userId))
+      })
+      .listen('.CategoryAdded', data => {
+        store.dispatch(actionAddCategory(data.category))
+      })
+      .listen('.CategoryEdited', data => {
+        store.dispatch(actionUpdateCategory(data.category))
+      })
+      .listen('.CategoryDeleted', data => {
+        store.dispatch(actionDeleteCategory(data.categoryId))
+      })
+      .listen('.ClientAdded', data => {
+        store.dispatch(actionAddClient(data.client))
+      })
+      .listen('.ClientEdited', data => {
+        store.dispatch(actionUpdateClient(data.client))
+      })
+      .listen('.ClientDeleted', data => {
+        store.dispatch(actionDeleteClient(data.clientId))
+      })
   }
 
   render() {

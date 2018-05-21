@@ -4,30 +4,35 @@ import classNames from 'classnames'
 import makeCancelable from 'makecancelable'
 import { connect } from 'react-redux'
 
-import { dispatchGetAllUsers } from '@/store/reducers/users'
+import { dispatchGetAllUsers } from '@/store/modules/users'
+import { dispatchAddClient, dispatchEditClient } from '@/store/modules/clients'
 import { clientSelector } from '@/store/selectors/clients'
 import { usersSelector } from '@/store/selectors/users'
 
 import { toastr } from 'Helpers'
 
 const mapStateToProps = state => ({
-  users: () => usersSelector(state),
+  users: usersSelector(state),
   getClient: clientId => clientSelector(clientId)(state),
 })
 
 const mapDispatchToProps = dispatch => ({
   getAllUsers: () => dispatchGetAllUsers(dispatch),
+  addClient: data => dispatchAddClient(dispatch, data),
+  editClient: data => dispatchEditClient(dispatch, data),
 })
 
 class ClientForm extends Component {
   constructor(props) {
     super(props)
 
-    const editingClient = this.props.getClient(this.props.client.id)
+    const { editing } = this.props
+
+    const editingClient = editing ? this.props.getClient(this.props.client) : {}
 
     this.state = {
-      clientName: this.props.editing ? editingClient.name : '',
-      clientAccountManager : this.props.editing ? editingClient.account_manager_id : '',
+      clientName: editing ? editingClient.name : '',
+      clientAccountManager: editing ? editingClient.account_manager_id : '',
       loading: false,
       editingClient
     }
@@ -41,29 +46,39 @@ class ClientForm extends Component {
     })
 
     const clientData = {
-      name: this.clientName,
-      accountManager: this.clientAccountManager
+      name: this.state.clientName,
+      accountManager: this.state.clientAccountManager
     }
 
-    let action = this.addClient
-    if (this.editing) {
-      clientData.id = this.editingClient.id
-      action = this.editClient
+    let action = this.props.addClient
+    if (this.props.editing) {
+      clientData.id = this.state.editingClient.id
+      action = this.props.editClient
     }
 
-    return action(clientData).then(() => {
-      this.loading = false
+    this.cancelSaveClient = makeCancelable(
+      action(clientData),
+      () => {
+        this.setState({ loading: false })
 
-      this.$router.push('/admin/clients')
-    }, () => {
-      this.loading = false
+        this.props.history.push('/admin/clients')
+      },
+      () => {
+        this.setState({ loading: false })
 
-      toastr.error(`An error occurred while processing your request`, 'Error')
-    })
+        toastr.error(`An error occurred while processing your request`, 'Error')
+      }
+    )
   }
 
   componentDidMount() {
     this.props.getAllUsers()
+  }
+
+  componentWillUnmount() {
+    if (this.cancelSaveClient) {
+      this.cancelSaveClient()
+    }
   }
 
   render() {
@@ -76,7 +91,7 @@ class ClientForm extends Component {
           </div>
         </div>
         <div className="field">
-          <label className="label" for="account_manager">Account Manager</label>
+          <label className="label" htmlFor="account_manager">Account Manager</label>
           <div className="select">
             <select id="account_manager" value={this.state.clientAccountManager} onChange={e => this.setState({ clientAccountManager: e.target.value })} required>
               <option disabled value="">Choose an account manager</option>

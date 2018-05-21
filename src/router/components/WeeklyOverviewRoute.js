@@ -11,11 +11,11 @@ import { toastr } from 'Helpers'
 
 import UserTaskTable from '@/components/UserTaskTable'
 
-import { dispatchGetAllCategories } from '@/store/reducers/categories'
-import { dispatchGetAllUsers } from '@/store/reducers/users'
-import { dispatchGetAllClients } from '@/store/reducers/clients'
-import { dispatchGetAllNotes } from '@/store/reducers/notes'
-import { dispatchGetTasksBetweenDates } from '@/store/reducers/tasks'
+import { dispatchGetAllCategories } from '@/store/modules/categories'
+import { dispatchGetAllUsers } from '@/store/modules/users'
+import { dispatchGetAllClients } from '@/store/modules/clients'
+import { dispatchGetAllNotes } from '@/store/modules/notes'
+import { dispatchGetTasksBetweenDates } from '@/store/modules/tasks'
 
 import { displayCategoriesSelector } from '@/store/selectors/categories'
 import { categoryUsersSelector } from '@/store/selectors/users'
