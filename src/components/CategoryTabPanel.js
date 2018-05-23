@@ -55,7 +55,12 @@ class CategoryTabPanel extends Component {
 
                 return (
                   <Tab key={user.id} name={user.name}>
-                    <UserTaskTable key={user.id} user={user} tasks={userTasks} background={this.props.category.hex_color} />
+                    <UserTaskTable
+                      key={user.id}
+                      tasks={userTasks}
+                      background={this.props.category.hex_color}
+                      // startDate={this.state.startDate}
+                    />
                   </Tab>
                 )
               })

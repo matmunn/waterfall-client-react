@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import DatePicker from 'react-datepicker'
 import moment from 'moment'
 import toastr from 'toastr'
 import EventBus from 'eventing-bus'
@@ -13,14 +12,15 @@ import { dispatchGetAllCategories } from '@/store/modules/categories'
 import { dispatchGetAllUsers } from '@/store/modules/users'
 import { dispatchGetAllClients } from '@/store/modules/clients'
 import { dispatchGetAllNotes } from '@/store/modules/notes'
+import { dispatchGetTasksBetweenDates } from '@/store/modules/tasks'
 
 import styles from './styles/HomeRoute.scss'
 import logo from '@/assets/static/logo.svg'
 
 import Tabs from '@/components/Tabs'
 import Tab from '@/components/Tab'
+import DateRangeSelector from '@/components/DateRangeSelector'
 import CategoryTabPanel from '@/components/CategoryTabPanel'
-import { dispatchGetTasksBetweenDates } from '../../store/modules/tasks';
 
 const mapStateToProps = state => ({
   displayCategories: displayCategoriesSelector(state),
@@ -53,13 +53,6 @@ class HomeRoute extends Component {
     this.fetchTasksWithDates()
   }
 
-  setDate = date => {
-    this.setState({
-      startDate: date.clone().day(1),
-      endDate: date.clone().day(5),
-    })
-  }
-
   fetchTasksWithDates = () => {
     this.setState({
       loading: true
@@ -88,6 +81,16 @@ class HomeRoute extends Component {
   }
 
   categorySafeName = catName => catName.toLowerCase().replace(' ', '_')
+
+  setDates = dates => {
+    this.setState({
+      loading: true,
+      startDate: dates.start,
+      endDate: dates.end
+    }, () => {
+      this.fetchTasksWithDates()
+    })
+  }
 
   render() {
     return (
@@ -119,21 +122,13 @@ class HomeRoute extends Component {
           </div>
           <div className="hero-foot">
             <div className="container">
-              <div className={styles.dateInputs}>
-                <div className="field has-addons has-addons-centered">
-                  <div className="control">
-                    <DatePicker className='input' dateFormat={this.state.dateFormat} onChange={date => this.setDate(date)} selected={this.state.startDate} />
-                  </div>
-                  <p className="control">
-                    <span className="button is-static">
-                      to
-                    </span>
-                  </p>
-                  <div className="control">
-                    <DatePicker className='input' dateFormat={this.state.dateFormat} onChange={date => this.setDate(date)} selected={this.state.endDate} />
-                  </div>
-                </div>
-              </div>
+              <DateRangeSelector
+                className={styles.dateInputs}
+                dateFormat={this.state.dateFormat}
+                startDate={this.state.startDate}
+                endDate={this.state.endDate}
+                onChange={dates => this.setDates(dates)}
+              />
             </div>
           </div>
         </section>

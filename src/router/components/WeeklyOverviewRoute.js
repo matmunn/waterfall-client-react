@@ -10,6 +10,7 @@ import { map } from 'lodash'
 import { toastr } from 'Helpers'
 
 import UserTaskTable from '@/components/UserTaskTable'
+import DateRangeSelector from '@/components/DateRangeSelector'
 
 import { dispatchGetAllCategories } from '@/store/modules/categories'
 import { dispatchGetAllUsers } from '@/store/modules/users'
@@ -50,17 +51,12 @@ class WeeklyOverviewRoute extends Component {
     }
   }
 
-  setDate = date => {
+  setDates = dates => {
     this.setState({
-      startDate: date.clone().day(1),
-      endDate: date.clone().day(5),
-      taskCount: 999,
+      startDate: dates.start,
+      endDate: dates.end,
+      loading: true
     }, () => {
-      EventBus.publish('date-changed-event', {
-        start: this.state.startDate.format('YYYY-MM-DD'),
-        end: this.state.endDate.format('YYYY-MM-DD'),
-      })
-
       this.fetchTasksWithDates()
     })
   }
@@ -73,11 +69,11 @@ class WeeklyOverviewRoute extends Component {
     this.setState({
       loading: true
     })
-    EventBus.publish('started-loading-tasks')
+    // EventBus.publish('started-loading-tasks')
     this.cancelFetchDates = makeCancelable(
       this.props.getTasksBetweenDates({ start: this.state.startDate.format('YYYY-MM-DD'), end: this.state.endDate.format('YYYY-MM-DD') }),
       tasks => {
-        EventBus.publish('finished-loading-tasks')
+        // EventBus.publish('finished-loading-tasks')
         if (tasks > this.state.taskCount) {
           toastr.info('New tasks have been added', 'Notice')
           if (this.props.notificationPermission !== 'denied') {
@@ -143,21 +139,13 @@ class WeeklyOverviewRoute extends Component {
           </div>
           <div className="hero-foot">
             <div className="container">
-              <div className={styles.dateInputs}>
-                <div className="field has-addons has-addons-centered">
-                  <div className="control">
-                    <DatePicker className='input' dateFormat={this.state.dateFormat} onChange={date => this.setDate(date)} selected={this.state.startDate} />
-                  </div>
-                  <p className="control">
-                    <span className="button is-static">
-                      to
-                    </span>
-                  </p>
-                  <div className="control">
-                    <DatePicker className='input' dateFormat={this.state.dateFormat} onChange={date => this.setDate(date)} selected={this.state.endDate} />
-                  </div>
-                </div>
-              </div>
+              <DateRangeSelector
+                className={styles.dateInputs}
+                dateFormat={this.state.dateFormat}
+                startDate={this.state.startDate}
+                endDate={this.state.endDate}
+                onChange={dates => this.setDates(dates)}
+              />
             </div>
           </div>
         </section>
@@ -177,7 +165,12 @@ class WeeklyOverviewRoute extends Component {
                         { user.name }
                       </h2>
                     </div>
-                    <UserTaskTable tasks={this.userTasks(user.id)} background={category.hex_color} />
+                    <UserTaskTable
+                      key={user.id}
+                      tasks={this.userTasks(user.id)}
+                      background={category.hex_color}
+                      startDate={this.state.startDate}
+                    />
                   </div>
                 ))
               }

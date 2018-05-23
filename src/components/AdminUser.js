@@ -42,7 +42,7 @@ class AdminUser extends Component {
           { this.props.user.email }
         </td>
         <td>
-          { this.props.getCategory(this.props.user.category_id).description }
+          {this.props.getCategory(this.props.user.category_id) ? this.props.getCategory(this.props.user.category_id).description : '' }
         </td>
         <td>
           <Link to={editLink}>

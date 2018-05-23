@@ -13,6 +13,7 @@ import { dispatchGetAllTasks } from '@/store/modules/tasks'
 import { dispatchGetAllClients } from '@/store/modules/clients'
 
 import { sortedTasksWithDateSelector } from '@/store/selectors/tasks'
+import DateRangeSelector from '@/components/DateRangeSelector'
 
 const mapStateToProps = state => ({
   users: state.users.users,
@@ -67,6 +68,13 @@ class TaskListRoute extends Component {
     }
   }
 
+  setDates = dates => {
+    this.setState({
+      startDate: dates.start,
+      endDate: dates.end
+    })
+  }
+
   render() {
     if (this.state.loading) {
       return (
@@ -97,10 +105,16 @@ class TaskListRoute extends Component {
                 </div>
               </div>
             </div>
-            <div className="field has-addons has-addons-centered">
+            <DateRangeSelector
+              dateFormat={this.state.dateFormat}
+              startDate={this.state.startDate}
+              endDate={this.state.endDate}
+              onChange={dates => this.setDates(dates)}
+            />
+            {/* <div className="field has-addons has-addons-centered">
               <div className="control">
                 <DatePicker className='input' dateFormat={this.state.dateFormat} onChange={date => this.setDate(date)} selected={this.state.startDate} />
-                {/* <DatePicker : value='startDate' :input-className="datepickerInputClass" @selected='chooseDate2' :wrapper-className='datepickerWrapperClass'></DatePicker> */}
+                <DatePicker : value='startDate' :input-className="datepickerInputClass" @selected='chooseDate2' :wrapper-className='datepickerWrapperClass'></DatePicker>
               </div>
               <div className="control">
                 <span className="button is-static">
@@ -108,9 +122,9 @@ class TaskListRoute extends Component {
                 </span>
               </div>
               <div className="control">
-                {/* <DatePicker : value='endDate' :input-className="datepickerInputClass" @selected='chooseDate2' :wrapper-className='datepickerWrapperClass'></DatePicker> */}
+                <DatePicker : value='endDate' :input-className="datepickerInputClass" @selected='chooseDate2' :wrapper-className='datepickerWrapperClass'></DatePicker>
               </div>
-            </div>
+            </div> */}
           </div >
           <table>
             <thead>

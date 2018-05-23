@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { ClipLoader } from 'react-spinners'
 import { reduce, map } from 'lodash'
 import PropTypes from 'prop-types'
-import moment from 'moment'
 
 import styles from './styles/UserTaskTable.scss'
 
@@ -25,8 +24,6 @@ class UserTaskTable extends Component {
 
     this.state = {
       loading: false,
-      startDate: moment().day(1),
-      endDate: moment().day(5),
     }
   }
 
@@ -61,23 +58,23 @@ class UserTaskTable extends Component {
             </th>
             <th colSpan='7'>
               Monday<br />
-              { this.state.startDate.format('DD/MM/YY') }
+              { this.props.startDate.format('DD/MM/YY') }
             </th>
             <th colSpan='7'>
               Tuesday<br />
-              { this.state.startDate.add(1, 'day').format('DD/MM/YY') }
+              { this.props.startDate.add(1, 'day').format('DD/MM/YY') }
             </th>
             <th colSpan='7'>
               Wednesday<br />
-              { this.state.startDate.add(2, 'days').format('DD/MM/YY') }
+              { this.props.startDate.add(2, 'days').format('DD/MM/YY') }
             </th>
             <th colSpan='7'>
               Thursday<br />
-              { this.state.startDate.add(3, 'days').format('DD/MM/YY') }
+              { this.props.startDate.add(3, 'days').format('DD/MM/YY') }
             </th>
             <th colSpan='7'>
               Friday<br />
-              { this.state.startDate.add(4, 'days').format('DD/MM/YY') }
+              { this.props.startDate.add(4, 'days').format('DD/MM/YY') }
             </th>
           </tr>
           <tr className={styles.rotatedText}>
@@ -125,7 +122,9 @@ class UserTaskTable extends Component {
         </thead>
         <tbody>
           {
-            map(this.props.tasks, task => <Task v-for='task in tasks' key={task.id} task={task} background={this.props.background} />)
+            map(this.props.tasks, task => (
+              <Task key={task.id} task={task} background={this.props.background} />
+            ))
           }
           <tr>
             <td></td>

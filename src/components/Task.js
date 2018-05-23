@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import moment from 'moment'
+import classNames from 'classnames'
 
 import helpers from 'Helpers'
 import { TaskValidator } from '@/utils/validators'
@@ -47,9 +48,12 @@ class Task extends Component {
 
   title = () => {
     const createdAt = moment(this.props.task.created_at)
+    const client = this.props.client(this.props.task.client_id) ? this.props.client(this.props.task.client_id).name : ''
+    const accountManager = this.props.user(this.props.client(this.props.task.client_id).account_manager_id) ? this.props.user(this.props.client(this.props.task.client_id).account_manager_id).name : ''
+
     return `${this.props.task.description}\n` +
-      `\nClient: ${this.props.client(this.props.task.client_id).name}\n` +
-      `Account Manager: ${this.props.user(this.props.client(this.props.task.client_id).account_manager_id).name}\n` +
+      `\nClient: ${client}\n` +
+      `Account Manager: ${accountManager}\n` +
       `\nCreated on ${createdAt.format('D MMM [at] HH:mm')} by ${this.props.user(this.props.task.created_by).name || 'Unknown'}`
   }
 
@@ -118,8 +122,11 @@ class Task extends Component {
 
     const notes = this.props.notes(this.props.task.id)
 
+    let classNameObject = {}
+    classNameObject[styles.strikethrough] = this.props.task.completed
+
     return (
-      <tr className={this.props.task.completed ? styles.strikethrough : ''}>
+      <tr className={classNames(classNameObject, styles.Task)}>
         <td title={this.title()}>
           { this.props.client(this.props.task.client_id).name }
         </td>

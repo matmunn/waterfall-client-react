@@ -1,86 +1,89 @@
-.mobile {
-  display: none;
-}
-tr.strikethrough {
-  opacity: 0.3;
+.Task {
 
-  td:before {
-    content: " ";
-    position: absolute;
-    top: 50%;
-    width: 100%;
-    left: 0;
-    border-bottom: 2px solid red;
-    z-index: 2;
-    pointer-events: none;
-  }
-}
-
-.modalOpen tr.strikethrough {
-  opacity: 1;
-}
-
-td {
-  position: relative;
-
-  &:first-of-type {
-    white-space: nowrap;
-  }
-}
-.checkMark {
-  min-width: 70px;
-}
-.fa {
-  cursor: pointer;
-}
-.fa-check {
-  color: yellowgreen;
-}
-.fa-times {
-  color: red;
-}
-td:not(:first-of-type):not(:nth-of-type(2)) {
-  text-align: center;
-}
-td {
-  &:first-of-type, &:nth-of-type(2), &:nth-of-type(3) {
-    padding: 3px 7px;
-  }
-}
-td:nth-of-type(7n+4) {
-  border-right-width: 2px;
-}
-.filler {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  box-sizing: border-box;
-
-  i {
-    cursor: initial;
-    position: relative;
-    top: 3px;
-  }
-}
-.job-description {
-  width: 12vw;
-  max-width: 12vw;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.addedDuringWeek {
-  background-color: #de8ef8 !important;
-  color: #de8ef8 !important;
-}
-
-@media (max-width: 767px) {
-  .desktop {
+  .mobile {
     display: none;
   }
-  .mobile {
-    display: block;
+  tr.strikethrough {
+    opacity: 0.3;
+
+    td:before {
+      content: " ";
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      left: 0;
+      border-bottom: 2px solid red;
+      z-index: 2;
+      pointer-events: none;
+    }
+  }
+
+  .modalOpen tr.strikethrough {
+    opacity: 1;
+  }
+
+  td {
+    position: relative;
+
+    &:first-of-type {
+      white-space: nowrap;
+    }
+  }
+  .checkMark {
+    min-width: 70px;
+  }
+  .fa {
+    cursor: pointer;
+  }
+  .fa-check {
+    color: yellowgreen;
+  }
+  .fa-times {
+    color: red;
+  }
+  td:not(:first-of-type):not(:nth-of-type(2)) {
+    text-align: center;
+  }
+  td {
+    &:first-of-type, &:nth-of-type(2), &:nth-of-type(3) {
+      padding: 3px 7px;
+    }
+  }
+  td:nth-of-type(7n+4) {
+    border-right-width: 2px;
+  }
+  .filler {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+
+    i {
+      cursor: initial;
+      position: relative;
+      top: 3px;
+    }
+  }
+  .job-description {
+    width: 12vw;
+    max-width: 12vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .addedDuringWeek {
+    background-color: #de8ef8 !important;
+    color: #de8ef8 !important;
+  }
+
+  @media (max-width: 767px) {
+    .desktop {
+      display: none;
+    }
+    .mobile {
+      display: block;
+    }
   }
 }

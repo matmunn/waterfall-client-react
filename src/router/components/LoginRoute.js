@@ -101,7 +101,7 @@ class LoginRoute extends Component {
                 Email Address
               </label>
               <p className="control">
-                <input type="email" id="email" className={classNames('input', { 'is-danger': this.state.errors.email })} onChange={e => this.setState({ email: e.target.value })} required />
+                <input type="email" id="email" value={this.state.email} className={classNames('input', { 'is-danger': this.state.errors.email })} onChange={e => this.setState({ email: e.target.value })} required />
               </p>
               {
                 this.state.errors.email ?
@@ -117,7 +117,7 @@ class LoginRoute extends Component {
                 Password
               </label>
               <p className="control">
-                <input type="password" className={classNames('input', { "is-danger": this.state.errors.password })} id="password" onChange={e => this.setState({ password: e.target.value })} required />
+                <input type="password" value={this.state.password} className={classNames('input', { "is-danger": this.state.errors.password })} id="password" onChange={e => this.setState({ password: e.target.value })} required />
               </p>
               {
                 this.state.errors.password ?

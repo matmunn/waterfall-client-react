@@ -106,6 +106,7 @@ class TaskForm extends Component {
         this.props.history.push('/admin/tasks')
       },
       err => {
+        this.setState({ loading: false })
         if (err === 'time-error') {
           toastr.error(`The end time must be after the start time`, 'Error')
         } else if (err === 'client-not-found-error') {
@@ -162,7 +163,7 @@ class TaskForm extends Component {
               <Select
                 options={this.props.clients}
                 value={this.state.client}
-                onChange={value => this.setState({ client: value })}
+                onChange={value => this.setState({ client: value.id })}
                 searchable={true}
                 labelKey='name'
                 valueKey='id'
